@@ -15,71 +15,69 @@ unsigned int tour_greedy(size_t start_x, size_t start_y);
 void greedy_tour_from_each_square();
 
 board_t board;
-board_t visited;
 board_t resultBoard;
+
 void greedy_tour_from_each_square() {
   size_t start_x = 0;
   size_t start_y = 0; // initialized til 0 så vi starter i 0,0 og iterer derfra
   for (start_x = 0; start_x < SIZE; start_x++) {
-    for (start_y = 0; start_y < SIZE; start_y++)
-      tour_greedy(start_x, start_y); // kør touren ved hvert squareint
-    resultBoard[start_x][start_y] = tour_greedy(start_x, start_y);
-    // sæt det square vi startede ved til værdien af tour_greedy i det punkt så
-    // vi ved hvor mange den nåede. (ikke på den måde, det kommer ikke til at
-    // virke)
+    for (start_y = 0; start_y < SIZE; start_y++) {
+      unsigned int moves =
+          tour_greedy(start_x, start_y); // unsigned fordi den skal være positiv
+      resultBoard[start_x][start_y] = moves;
+    }
   }
-}
-
-unsigned int tour_greedy(size_t start_x, size_t start_y) {
-  size_t i;
-  int new_x = start_x;
-  int new_y = start_y;
-  do {
-    int new_x = new_x + MOVES_X[i];
-    int new_y = new_y + MOVES_Y[i];
-    i++;
-  } while (!*move_is_possible && i > SIZE);
-  // prøv move_count x og y
-  // if (move_is_possible) {visited[][] = 1 ; postion_x = postion_x + move_count
-  // x osv
-};
-
-bool move_is_possible(size_t move_id, size_t x, size_t y, board_t visited) {
-  // tag nuværende position + move_id MOVES_X, MOVES_Y og tjek om == 0 eller ej.
-}
-
-int main() {
-
   for (int x = 0; x < SIZE; x++) {
     printf("\n");
     for (int y = 0; y < SIZE; y++)
-      printf("%2d", board[x][y]);
+      printf("%2d ", resultBoard[x][y]);
   }
   printf("\n");
+}
+
+unsigned int tour_greedy(size_t start_x, size_t start_y) {
+  board_t visited = {0};
+  size_t i = 0;
+  size_t moves = 1;
+  int new_x = start_x;
+  int new_y = start_y;
+  visited[new_x][new_y] = 1;
+
+  while (true) {
+    bool moved = false;
+    for (size_t i = 0; i < MOVE_COUNT; i++) {
+      if (move_is_possible(i, new_x, new_y, visited)) {
+        new_x += MOVES_X[i];
+        new_y += MOVES_Y[i];
+
+        moves++;
+        visited[new_x][new_y] = 1;
+        moved = true;
+        break;
+      }
+    }
+    if (!moved) {
+      break;
+    }
+  }
+  return moves;
+};
+
+bool move_is_possible(size_t move_id, size_t x, size_t y, board_t visited) {
+  int new_x = x + MOVES_X[move_id];
+  int new_y = y + MOVES_Y[move_id];
+
+  if ((new_x < 0 || new_x >= SIZE) || (new_y < 0 || new_y >= SIZE)) {
+    return false;
+  }
+  if (visited[new_x][new_y] == 1) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+int main(void) {
+  greedy_tour_from_each_square();
   return 0;
 }
-/* int main(void) {
-greedy_tour_from_each_square();
-return 0;
-}*/
-// skal implementeres sådan her til sidst
-
-// lav et 8x8 grid
-
-// sæt position
-
-// if board[MOVES_X[i]][MOVES_Y[i]] == 0 {
-// }
-
-// lav koordinaterne x og y
-// kør et if statement: Afprøv en af de lovlige moves, hvis det er lovligt (Vi
-// har en samling moves ala +1-2 -1-2 osv) (inden for 0-7 og feltet er frit) så
-// ryk derhen hvis ikke, prøv en anden. Hvis alle ikke var lovlige så slut the
-// run. hvis lovligt så ændr. din position (lav en variabel der er yourPosition)
-// og ændr det felt til optaget (evt. bare lave en array med besøgte felter)
-
-// backtrack - hvis du rammer noget ulovligt så start sekvensen forfra fra moved
-// inden og afprøv alle mulighed. Hvis ikke der er noget lovligt der så gå flere
-// moves tilbage. Osv. og log hvad du har prøvet? Meget besværligt måske.
-// hvad med at prøve den anden vej fra - start med fuldt udfyldt board og så
-// backtrack derfra
