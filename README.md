@@ -28,7 +28,7 @@ main.exe
 
 ## Flowchart
 Flowchart of the simple approach a human would take if not trying to figure out the optimal solution:
-![Flowchart of human approach](https://imgur.com/a/gaBg73t)
+![Flowchart of human approach](https://i.imgur.com/wvOQXTj.png)
 
-Simple flowchart of our programme
-![Flowchart of greedy knight's approach](https://imgur.com/a/3EwRRax)
+Flowchart of our simple greedy approach:
+![Flowchart of greedy knight's approach](https://i.imgur.com/Z1pWTZw.png)
