@@ -1,0 +1,4 @@
+-std=gnu2y
+-g3
+-O0
+-Iinclude
